@@ -1,0 +1,24 @@
+server:
+  port: 8080
+  servlet:
+    context-path:
+    application-display-name:
+spring:
+  datasource:
+    driver-class-name:
+    url:
+    username:
+    password:
+    hikari:
+      maximum-pool-size:
+      minimum-idle:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema:
+logging:
+  level:
+    ru.ursip.webservice.mgsn.oshs: DEBUG
+    org.springframework.web: DEBUG
+  file: logs/oshs.log
