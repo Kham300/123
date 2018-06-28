@@ -1,0 +1,1 @@
+insert into oshs.delegation (employee_id, delegate_id, start_date, end_date, doc_number, doc_name, file_id)
