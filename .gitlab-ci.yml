@@ -1,0 +1,53 @@
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  PROJECT: "MGSN"
+  DEV_NAMESPACE: "mgsn-develop"
+  STAGE_NAMESPACE: "mgsn-stable"
+  APP: "oshs"
+  PORT: "8081"
+
+before_script:
+  - export DATE_ENV=$(date +'%d-%m-%Y')
+
+stages:
+  - build
+  - deploy
+
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+
+Build:
+  stage: build
+  before_script:
+    - git archive --remote=git@gitlab.ursip.ru:ursip/maven-masters.git micro resources | tar xvf -
+    - git archive --remote=git@gitlab.ursip.ru:root/help.git master JavaConfig/.m2 | tar xvf - --strip-components=1
+  script:
+    - 'rm -rf .m2/repository/ru/mdi .m2/repository/ru/ursip'
+    - 'mvn clean package -DskipTests=true'
+  artifacts:
+    paths:
+    - target/*.jar
+
+
+devDeploy:
+  stage: deploy
+  only:
+    - develop
+  before_script:
+    - TMPDIR=$(ssh suadm@192.168.13.46 "mktemp -d")
+  script:
+    - scp -r target/$APP.jar suadm@192.168.13.46:$TMPDIR
+    - ssh suadm@192.168.13.46 "sudo /opt/deploy deploy $PROJECT $DEV_NAMESPACE $APP $TMPDIR $PORT"
+
+masterDeploy:
+  stage: deploy
+  only:
+    - master
+  before_script:
+    - TMPDIR=$(ssh suadm@192.168.13.46 "mktemp -d")
+  script:
+    - scp -r target/$APP.jar suadm@192.168.13.46:$TMPDIR
+    - ssh suadm@192.168.13.46 "sudo /opt/deploy deploy $PROJECT $STAGE_NAMESPACE $APP $TMPDIR $PORT"
+    - 'jfrog rt u target/$APP.jar generic-local/$CI_PROJECT_PATH/$DATE_ENV/$APP.jar'
