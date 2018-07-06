@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
  * @author Anton Kuznetsov
  * @since  21.06.2018
  */
-@SpringBootApplication(scanBasePackages = ["ru.ursip.webservice.mgsn.oshs"])
+@SpringBootApplication(scanBasePackages = ["ru.ursip.webservice"])
 @EnableJpaRepositories("ru.ursip.webservice.mgsn.oshs.repository")
 @EnableTransactionManagement
 class OshsApplication
