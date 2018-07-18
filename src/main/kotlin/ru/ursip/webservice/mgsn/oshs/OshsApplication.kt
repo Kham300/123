@@ -1,7 +1,7 @@
 package ru.ursip.webservice.mgsn.oshs
 
-import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 
 /**
  * Стартовый класс приложения
@@ -11,12 +11,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
  */
 @SpringBootApplication(scanBasePackages = ["ru.ursip.webservice"])
 class OshsApplication {
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            SpringApplication.run(OshsApplication::class.java, *args)
-        }
-    }
+//    companion object {
+//        @JvmStatic
+//        fun main(args: Array<String>) {
+//            SpringApplication.run(OshsApplication::class.java, *args)
+//        }
+//    }
 }
 
 
@@ -28,3 +28,7 @@ class OshsApplication {
 //    fun main(args: Array<String>) {
 //        SpringApplication.run(OshsApplication::class.java, *args)
 //    }
+
+fun main(args: Array<String>) {
+    runApplication<OshsApplication>(*args)
+}
