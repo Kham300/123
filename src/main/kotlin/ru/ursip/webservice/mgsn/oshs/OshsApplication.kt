@@ -10,13 +10,21 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
  * @since  21.06.2018
  */
 @SpringBootApplication(scanBasePackages = ["ru.ursip.webservice"])
-class OshsApplication
-
-/**
- * Стартовый метод приложения
- *
- * @param args аргументы
- */
-fun main(args: Array<String>) {
-    SpringApplication.run(OshsApplication::class.java, *args)
+class OshsApplication {
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            SpringApplication.run(OshsApplication::class.java, *args)
+        }
+    }
 }
+
+
+//    /**
+//     * Стартовый метод приложения
+//     *
+//     * @param args аргументы
+//     */
+//    fun main(args: Array<String>) {
+//        SpringApplication.run(OshsApplication::class.java, *args)
+//    }
