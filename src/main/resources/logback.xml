@@ -1,7 +1,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <appender name="file-audit" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/audit.log</file>
+        <file>заказчик(вова не удаляй)/audit.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
             <fileNamePattern>audit.%d{yyyy-MM-dd}.log</fileNamePattern>
