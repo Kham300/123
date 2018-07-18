@@ -70,14 +70,16 @@ data class Employee(
         @CreatedDate
         var createDate: Date? = Date(),
 
-        @ApiModelProperty("Идентификатор подразделения")
-        var departmentId: UUID? = null,
+        @ApiModelProperty("Подразделение")
+        @ManyToOne(cascade = [CascadeType.ALL])
+        @JoinColumn(name = "department_id")
+        var department: Department? = null,
 
         @ApiModelProperty("Делегирования от пользователя")
-        @OneToMany(mappedBy = "employeeId")
+        @OneToMany(mappedBy = "employee")
         var delegationsTo: MutableSet<Delegation>? = null,
 
         @ApiModelProperty("Делегирования пользователю")
-        @OneToMany(mappedBy = "delegateId")
+        @OneToMany(mappedBy = "delegate")
         var delegationsFrom: MutableSet<Delegation>? = null
 )

@@ -4,7 +4,7 @@ import ru.ursip.webservice.mgsn.oshs.model.Employee
 import java.util.*
 
 interface EmployeeService {
-    fun getByDepartmentId(id: UUID): List<Employee>
+    fun getByDepartmentId(id: UUID): Set<Employee>
 
     fun create(employee: Employee): Employee
 

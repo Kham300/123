@@ -35,7 +35,7 @@ class EmployeeController(val employeeService: EmployeeService) {
             ResponseEntity.ok(employeeService.update(employee))
 
     @PostMapping("/delete")
-    @ApiOperation("Удаление делегирвоания")
-    fun delete(@ApiParam("Идентфикатор подразделения") @RequestParam("id") id: UUID) =
+    @ApiOperation("Удаление сотрудника")
+    fun delete(@ApiParam("Идентфикатор сотрудника") @RequestParam("id") id: UUID) =
             employeeService.delete(id)
 }

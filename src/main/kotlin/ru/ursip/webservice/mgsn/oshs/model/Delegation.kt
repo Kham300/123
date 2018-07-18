@@ -1,5 +1,6 @@
 package ru.ursip.webservice.mgsn.oshs.model
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.data.annotation.CreatedBy
@@ -17,12 +18,6 @@ data class Delegation(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         var id: UUID? = null,
-
-        @ApiModelProperty("Идентификатор сотрудника, делегирующего свои полномочия")
-        var employeeId: UUID? = null,
-
-        @ApiModelProperty("Идентификатор сотрудника, которому делигировали полномочия")
-        var delegateId: UUID? = null,
 
         @ApiModelProperty("Дата начала срока делегирвоания")
         var startDate: Date? = null,
@@ -46,4 +41,15 @@ data class Delegation(
         @ApiModelProperty("Дата создания")
         @CreatedDate
         var createDate: Date? = Date()
-)
+
+) {
+    @ApiModelProperty("Сотрудник, делегирующий свои полномочия")
+    @ManyToOne
+    @JsonIgnoreProperties("delegationsTo", "delegationsFrom")
+    var employee: Employee? = null
+
+    @ApiModelProperty("Сотрудник, которому делигировали полномочия")
+    @ManyToOne
+    @JsonIgnoreProperties("delegationsTo", "delegationsFrom")
+    var delegate: Employee? = null
+}

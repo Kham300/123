@@ -7,8 +7,16 @@ import java.util.*
 
 interface EmployeeDao : JpaRepository<Employee, UUID> {
 
-    @Query("select e from Employee e left join fetch e.delegationsTo left join fetch e.delegationsFrom where e.departmentId=:id")
-    fun getByDepartmentId(id: UUID): List<Employee>
+    @Query("""select e from Employee e
+        left join fetch e.department
+        left join fetch e.delegationsTo delTo
+        left join fetch e.delegationsFrom delFrom
+        left join fetch delTo.employee delToEmpl
+        left join fetch delToEmpl.department
+        left join fetch delFrom.delegate delFromDel
+        left join fetch delFromDel.department
+        where e.department.id=:id""")
+    fun getByDepartmentId(id: UUID): Set<Employee>
 
     fun getById(id: UUID): Employee
 }

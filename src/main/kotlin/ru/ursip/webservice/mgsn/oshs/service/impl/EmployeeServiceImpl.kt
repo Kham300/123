@@ -18,7 +18,7 @@ class EmployeeServiceImpl(val employeeDao: EmployeeDao,
      */
     private val log = LoggerFactory.getLogger("audit")
 
-    override fun getByDepartmentId(id: UUID): List<Employee> = employeeDao.getByDepartmentId(id)
+    override fun getByDepartmentId(id: UUID): Set<Employee> = employeeDao.getByDepartmentId(id)
 
     @Transactional
     override fun create(employee: Employee): Employee {
@@ -39,6 +39,7 @@ class EmployeeServiceImpl(val employeeDao: EmployeeDao,
     }
 
     override fun delete(id: UUID) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        employeeDao.deleteById(id)
+        log.debug("${auditorAware.currentAuditor.orElse("Unknown user")} delete employee with id $id")
     }
 }

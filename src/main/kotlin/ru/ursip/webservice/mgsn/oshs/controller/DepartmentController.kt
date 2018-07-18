@@ -35,7 +35,7 @@ class DepartmentController(val departmentService: DepartmentService) {
             ResponseEntity.ok(departmentService.update(department))
 
     @PostMapping("/delete")
-    @ApiOperation("Удаление делегирвоания")
+    @ApiOperation("Удаление подразделения")
     fun delete(@ApiParam("Идентфикатор подразделения") @RequestParam("id") id: UUID) =
             departmentService.delete(id)
 }
