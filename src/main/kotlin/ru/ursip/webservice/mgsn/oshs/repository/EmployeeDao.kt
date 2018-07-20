@@ -18,6 +18,14 @@ interface EmployeeDao : JpaRepository<Employee, UUID> {
         where e.department.id=:id""")
     fun getByDepartmentId(id: UUID): Set<Employee>
 
-    @Query("select e from Employee e left join fetch e.department where e.id=:id")
+    @Query("""select e from Employee e
+        left join fetch e.department
+        left join fetch e.delegationsTo delTo
+        left join fetch e.delegationsFrom delFrom
+        left join fetch delTo.employee delToEmpl
+        left join fetch delToEmpl.department
+        left join fetch delFrom.delegate delFromDel
+        left join fetch delFromDel.department
+        where e.id=:id""")
     fun getById(id: UUID): Employee?
 }
