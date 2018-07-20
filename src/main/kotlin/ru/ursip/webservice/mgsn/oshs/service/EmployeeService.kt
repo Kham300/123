@@ -11,4 +11,6 @@ interface EmployeeService {
     fun update(employee: Employee): Employee
 
     fun delete(id: UUID)
+
+    fun getById(id: UUID): Employee?
 }

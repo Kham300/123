@@ -24,6 +24,11 @@ class EmployeeController(val employeeService: EmployeeService) {
         else ResponseEntity.ok(employees)
     }
 
+    @GetMapping("/getById/{id}")
+    @ApiOperation("Получение сотрудника по идентификатору")
+    fun getById(@ApiParam("Идентификатор сотрудника") @PathVariable("id") id: UUID) =
+            employeeService.getById(id)?.let { ResponseEntity.ok(it) } ?: ResponseEntity.noContent().build()
+
     @PostMapping("/create")
     @ApiOperation("Создание сотрудника")
     fun create(@ApiParam("Сотрудник") @RequestBody employee: Employee): ResponseEntity<Any> =

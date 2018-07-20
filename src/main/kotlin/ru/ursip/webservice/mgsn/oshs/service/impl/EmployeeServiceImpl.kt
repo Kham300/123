@@ -42,4 +42,7 @@ class EmployeeServiceImpl(val employeeDao: EmployeeDao,
         employeeDao.deleteById(id)
         log.debug("${auditorAware.currentAuditor.orElse("Unknown user")} delete employee with id $id")
     }
+
+    override fun getById(id: UUID): Employee? = employeeDao.getById(id)
+
 }
