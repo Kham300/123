@@ -73,13 +73,13 @@ data class Employee(
         @ApiModelProperty("Подразделение")
         @ManyToOne
         @JoinColumn(name = "department_id")
-        var department: Department? = null,
+        var department: Department? = null
+) {
+    @ApiModelProperty("Делегирования от пользователя")
+    @OneToMany(mappedBy = "employee")
+    var delegationsTo: MutableSet<Delegation>? = null
 
-        @ApiModelProperty("Делегирования от пользователя")
-        @OneToMany(mappedBy = "employee")
-        var delegationsTo: MutableSet<Delegation>? = null,
-
-        @ApiModelProperty("Делегирования пользователю")
-        @OneToMany(mappedBy = "delegate")
-        var delegationsFrom: MutableSet<Delegation>? = null
-)
+    @ApiModelProperty("Делегирования пользователю")
+    @OneToMany(mappedBy = "delegate")
+    var delegationsFrom: MutableSet<Delegation>? = null
+}
