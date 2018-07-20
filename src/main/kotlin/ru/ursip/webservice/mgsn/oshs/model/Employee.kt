@@ -71,7 +71,7 @@ data class Employee(
         var createDate: Date? = Date(),
 
         @ApiModelProperty("Подразделение")
-        @ManyToOne(cascade = [CascadeType.ALL])
+        @ManyToOne
         @JoinColumn(name = "department_id")
         var department: Department? = null,
 
