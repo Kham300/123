@@ -1,5 +1,6 @@
 package ru.ursip.webservice.mgsn.oshs.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.data.annotation.CreatedBy
@@ -82,4 +83,7 @@ data class Employee(
     @ApiModelProperty("Делегирования пользователю")
     @OneToMany(mappedBy = "delegate")
     var delegationsFrom: MutableSet<Delegation>? = null
+
+    @JsonIgnore
+    fun getFullName() = "$surname $name $patronymic"
 }

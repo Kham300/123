@@ -23,6 +23,21 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+  mail:
+    host: smtp.ursip.ru
+    port: 587
+    username: kuznetsov_as@ursip.ru
+    password: trr6ZWpJtRPF
+    properties:
+      mail.smtp.localhost: host
+      mail.from: robot@ursip.ru
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.ssl.enable: true
+      mail.default-encoding: utf-8
+      mail.debug: true
+
+    test-connection: true
 logging:
   level:
     ru.ursip.webservice.mgsn.oshs: DEBUG

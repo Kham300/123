@@ -1,19 +1,23 @@
 package ru.ursip.webservice.mgsn.oshs.service.impl
 
+import kotlinx.coroutines.experimental.launch
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.AuditorAware
+import org.springframework.mail.SimpleMailMessage
+import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
 import ru.ursip.webservice.mgsn.oshs.model.Delegation
 import ru.ursip.webservice.mgsn.oshs.repository.DelegationDao
-import ru.ursip.webservice.mgsn.oshs.repository.EmployeeDao
 import ru.ursip.webservice.mgsn.oshs.service.DelegationService
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.transaction.Transactional
 
 @Service
 class DelegationServiceImpl(val delegationDao: DelegationDao,
-                            val employeeDao: EmployeeDao,
-                            val auditorAware: AuditorAware<String>) : DelegationService {
+                            val auditorAware: AuditorAware<String>,
+                            val sender: JavaMailSender) : DelegationService {
     /**
      * Логгер
      */
@@ -23,6 +27,7 @@ class DelegationServiceImpl(val delegationDao: DelegationDao,
     override fun create(delegation: Delegation): Delegation {
         if (delegation.id == null) {
             val dep = delegationDao.save(delegation)
+            launch { sendMessage(delegation) }
             log.debug("${auditorAware.currentAuditor.orElse("Unknown user")} create $dep")
             return dep
         } else throw Exception("delegation should have null id for creation")
@@ -33,6 +38,7 @@ class DelegationServiceImpl(val delegationDao: DelegationDao,
         if (delegation.id != null) {
             val dep = delegationDao.getById(delegation.id!!)
             val updatedDep = delegationDao.save(delegation)
+            launch { sendMessage(delegation) }
             log.debug("${auditorAware.currentAuditor.orElse("Unknown user")} updated from $dep to $updatedDep")
             return updatedDep
         } else throw Exception("delegation should have not null id for update")
@@ -43,4 +49,23 @@ class DelegationServiceImpl(val delegationDao: DelegationDao,
         delegationDao.deleteById(id)
         log.debug("${auditorAware.currentAuditor.orElse("Unknown user")} delete delegation with id $id")
     }
+
+    /*
+    Корутина для асинхронной отправки почты
+     */
+    private suspend fun sendMessage(delegation: Delegation) {
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.YYYY")
+        val message = SimpleMailMessage()
+        message.setTo("bobrisheva_ov@ursip.ru")  //todo поменять на реальный email пользователя
+        message.setSubject("Делегирование")
+        message.setText("""
+Уважаемый, ${delegation.delegate!!.getFullName()}
+${delegation.employee!!.getFullName()} делегировал Вам свои полномочия в период с ${delegation.startDate!!.format(formatter)} по ${delegation.endDate!!.format(formatter)}.
+На основании ${delegation.docName} № ${delegation.docNumber}.
+С уважением, вечер в хату, часик в радость, чефир в сладость
+        """.trimIndent())
+        sender.send(message)
+    }
 }
+
+fun Date.format(formatter: DateTimeFormatter): String = this.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter)
