@@ -86,4 +86,13 @@ data class Employee(
 
     @JsonIgnore
     fun getFullName() = "$surname $name $patronymic"
+
+    /**
+     * Возвращает пол
+     * True - женский, false - мужской
+     *
+     * @return Boolean
+     */
+    @JsonIgnore
+    fun getMale() = patronymic?.endsWith("a") ?: surname?.endsWith("a") ?: false
 }
