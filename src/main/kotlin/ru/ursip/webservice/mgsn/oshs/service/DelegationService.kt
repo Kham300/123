@@ -10,5 +10,5 @@ interface DelegationService {
 
     fun update(delegation: Delegation): Delegation
 
-    fun delete(id:UUID)
+    fun delete(id: UUID)
 }

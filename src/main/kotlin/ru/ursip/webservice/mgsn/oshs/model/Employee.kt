@@ -84,6 +84,10 @@ data class Employee(
     @OneToMany(mappedBy = "delegate")
     var delegationsFrom: MutableSet<Delegation>? = null
 
+    /**
+     * Возвращает полное имя
+     * @return String
+     */
     @JsonIgnore
     fun getFullName() = "$surname $name $patronymic"
 

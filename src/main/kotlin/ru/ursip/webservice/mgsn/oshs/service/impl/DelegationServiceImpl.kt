@@ -50,9 +50,9 @@ class DelegationServiceImpl(val delegationDao: DelegationDao,
         log.debug("${auditorAware.currentAuditor.orElse("Unknown user")} delete delegation with id $id")
     }
 
-    /*
-    Корутина для асинхронной отправки почты
-     */
+    /**
+     *Корутина для асинхронной отправки почты
+     **/
     private suspend fun sendMessage(delegation: Delegation) {
         try {
             val formatter = DateTimeFormatter.ofPattern("dd.MM.YYYY")
