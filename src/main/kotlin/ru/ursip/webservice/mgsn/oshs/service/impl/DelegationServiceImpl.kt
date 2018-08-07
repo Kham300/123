@@ -59,14 +59,14 @@ class DelegationServiceImpl(val delegationDao: DelegationDao,
             val message = SimpleMailMessage()
             message.setTo("bobrisheva_ov@ursip.ru", "kuznetsov_as@ursip.ru") //todo поменять на реальный email пользователя
             message.setSubject("Делегирование")
-            val textMessage = StringJoiner("""Уважаемый, ${delegation.delegate!!.getFullName()}
+            val textMessage = StringBuilder("""Уважаемый, ${delegation.delegate!!.getFullName()}
 ${delegation.employee!!.getFullName()} делегировал Вам свои полномочия""").apply {
-                delegation.startDate?.let { add(" с ${it.format(formatter)}") }
-                delegation.endDate?.let { add(" по ${it.format(formatter)}") }
-                if (delegation.docName != null || delegation.docNumber != null) add(".\nНа основании")
-                delegation.docName?.let { add(" $it") }
-                delegation.docNumber?.let { add(" № $it") }
-                add(".\nС уважением, МГСН")
+                delegation.startDate?.let { append(" с ${it.format(formatter)}") }
+                delegation.endDate?.let { append(" по ${it.format(formatter)}") }
+                if (delegation.docName != null || delegation.docNumber != null) append(".\nНа основании")
+                delegation.docName?.let { append(" $it") }
+                delegation.docNumber?.let { append(" № $it") }
+                append(".\nС уважением, МГСН")
             }.toString()
             message.setText(textMessage)
             sender.send(message)
