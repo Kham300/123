@@ -94,5 +94,5 @@ data class Employee(
      * @return Boolean
      */
     @JsonIgnore
-    fun getMale() = patronymic?.endsWith("a") ?: surname?.endsWith("a") ?: false
+    fun getMale() = patronymic?.endsWith("а") ?: surname?.endsWith("а") ?: false
 }

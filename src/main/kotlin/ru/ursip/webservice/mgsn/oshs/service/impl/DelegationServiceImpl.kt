@@ -70,7 +70,7 @@ class DelegationServiceImpl(val delegationDao: DelegationDao,
                 if (delegation.docName != null || delegation.docNumber != null) append(".\nНа основании")
                 delegation.docName?.let { append(" $it") }
                 delegation.docNumber?.let { append(" № $it") }
-                append(".\nС уважением, МГСН")
+                append(".\nС уважением, МГСН!")
             }.toString()
             message.setText(textMessage)
             sender.send(message)
