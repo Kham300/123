@@ -54,17 +54,25 @@ class DelegationServiceImpl(val delegationDao: DelegationDao,
     Корутина для асинхронной отправки почты
      */
     private suspend fun sendMessage(delegation: Delegation) {
-        val formatter = DateTimeFormatter.ofPattern("dd.MM.YYYY")
-        val message = SimpleMailMessage()
-        message.setTo("bobrisheva_ov@ursip.ru")  //todo поменять на реальный email пользователя
-        message.setSubject("Делегирование")
-        message.setText("""
-Уважаемый, ${delegation.delegate!!.getFullName()}
-${delegation.employee!!.getFullName()} делегировал Вам свои полномочия в период с ${delegation.startDate!!.format(formatter)} по ${delegation.endDate!!.format(formatter)}.
-На основании ${delegation.docName} № ${delegation.docNumber}.
-С уважением, вечер в хату, часик в радость, чефир в сладость
-        """.trimIndent())
-        sender.send(message)
+        try {
+            val formatter = DateTimeFormatter.ofPattern("dd.MM.YYYY")
+            val message = SimpleMailMessage()
+            message.setTo("bobrisheva_ov@ursip.ru", "kuznetsov_as@ursip.ru") //todo поменять на реальный email пользователя
+            message.setSubject("Делегирование")
+            val textMessage = StringJoiner("""Уважаемый, ${delegation.delegate!!.getFullName()}
+${delegation.employee!!.getFullName()} делегировал Вам свои полномочия""").apply {
+                delegation.startDate?.let { add(" с ${it.format(formatter)}") }
+                delegation.endDate?.let { add(" по ${it.format(formatter)}") }
+                if (delegation.docName != null || delegation.docNumber != null) add(".\nНа основании")
+                delegation.docName?.let { add(" $it") }
+                delegation.docNumber?.let { add(" № $it") }
+                add(".\nС уважением, МГСН")
+            }.toString()
+            message.setText(textMessage)
+            sender.send(message)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
 
